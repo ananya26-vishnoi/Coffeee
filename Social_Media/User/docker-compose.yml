@@ -1,0 +1,11 @@
+version: '3'
+
+services:
+  your-service:
+    build:
+      context: .
+      dockerfile: Dockerfile.your-service
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    ports:
+      - "5000:5000"
