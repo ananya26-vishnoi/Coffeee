@@ -1,9 +1,7 @@
 from flask import Blueprint, request
-import requests
 from dotenv import load_dotenv
-from .models import Post
+from .models import Post, User
 load_dotenv()
-import os
 posts_blueprint = Blueprint('post', __name__)
 
 
@@ -18,13 +16,13 @@ def create_post():
     user_token = data["user_token"]
 
     # Check if user is logged in
-    user_service_url =  "http://127.0.0.1:"+os.environ.get("USER_APP_PORT") + "/user/verify"
-    response = requests.post(user_service_url, json={"user_token": user_token})
-    if response.status_code != 200:
-        return {"message":"User not logged in"}, 400
+    user = User().verify_user(data["user_token"])
+    print(user)
+    if user is None:
+        return {"mesage":"User not found"}, 400
     
     # Get user id from response
-    user_id = response.json()["user"]["user_id"]
+    user_id = user['user_id']
 
     # Create post
     url = Post().create_post(data["title"], data["content"], user_id)

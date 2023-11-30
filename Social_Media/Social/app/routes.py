@@ -1,9 +1,7 @@
 from flask import Blueprint, request
-import requests
 from dotenv import load_dotenv
-from .models import Social
+from .models import Social, Post
 load_dotenv()
-import os
 social_blueprint = Blueprint('post', __name__)
 
 
@@ -106,12 +104,10 @@ def view_posts():
         return {"message":"User 1 does not follow User 2"}, 400
     
     # Get all posts from user_2
-    url = "http://localhost:"+os.environ.get("POST_APP_PORT") + "/post/getAll?user_id="+str(user_2)
-    response = requests.get(url)
-    if response.status_code != 200:
-        return {"message":"Error getting posts"}, 400
-    
-    return response.json(), 200
+    posts = Post().get_all_posts(user_2)
+    if posts is None:
+        return {"message":"No posts found"}, 200
+    return posts, 200
 
 @social_blueprint.route("/check_follow", methods=['POST'])
 def check_follow():
