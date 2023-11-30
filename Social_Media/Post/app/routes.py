@@ -18,7 +18,7 @@ def create_post():
     user_token = data["user_token"]
 
     # Check if user is logged in
-    user_service_url =  "http://localhost:"+os.environ.get("USER_APP_PORT") + "/user/verify"
+    user_service_url =  "http://127.0.0.1:"+os.environ.get("USER_APP_PORT") + "/user/verify"
     response = requests.post(user_service_url, json={"user_token": user_token})
     if response.status_code != 200:
         return {"message":"User not logged in"}, 400

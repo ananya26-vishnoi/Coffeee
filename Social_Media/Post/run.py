@@ -9,4 +9,4 @@ flask_app = Flask(__name__)
 flask_app.register_blueprint(posts_blueprint,url_prefix='/post')
 
 if __name__ == '__main__':
-    flask_app.run(debug=True,port = os.environ.get('POST_APP_PORT'))
+    flask_app.run(debug=True,port = os.environ.get('POST_APP_PORT'),host='0.0.0.0')
